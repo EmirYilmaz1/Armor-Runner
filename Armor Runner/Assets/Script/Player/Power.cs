@@ -6,15 +6,27 @@ public class Power : MonoBehaviour
 {
     
     public Action OnLevelChange;
-
+    public Action OnCharacterChange;
+    
     [SerializeField] private GameObject[] players = new GameObject[4];
     private int currentLevel = 1;
+
+    private CharacterType characterType;
+    public CharacterType CharacterType()
+    {
+        return characterType;
+    }
+
+    private int powerLevel = 0;
     public int PowerLevel()
     {
         return powerLevel;
     }
-    private int powerLevel = 0;
 
+    private void Awake() 
+    {
+        characterType = players[currentLevel].GetComponent<CharacterInfo>().CharacterType();    
+    }
     
 
     public void SetPower(int amount)
@@ -27,13 +39,14 @@ public class Power : MonoBehaviour
             players[currentLevel].gameObject.SetActive(false);
             currentLevel++;
             players[currentLevel].gameObject.SetActive(true);
-            powerLevel = willAdd;    
+            powerLevel = willAdd;
+            characterType = players[currentLevel].GetComponent<CharacterInfo>().CharacterType();
+            OnCharacterChange?.Invoke();
         }
         else if(level < 0)
         {
             if(currentLevel==0)
             {
-                 OnLevelChange?.Invoke();
                  return;
             }
 
@@ -42,12 +55,13 @@ public class Power : MonoBehaviour
             players[currentLevel].gameObject.SetActive(false);
             currentLevel--;
             players[currentLevel].gameObject.SetActive(true);
+            characterType = players[currentLevel].GetComponent<CharacterInfo>().CharacterType();
+            OnCharacterChange?.Invoke();
         }
         else
         {
             powerLevel = level;
         }
-        print(powerLevel);
         OnLevelChange?.Invoke();
     } 
 }
