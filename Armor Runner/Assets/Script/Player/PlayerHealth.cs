@@ -26,7 +26,7 @@ public class PlayerHealth : MonoBehaviour
         playerCurrentHealth = playerMaxHealth;
     }
 
-    public void DecreaseHeal(int amount)
+    public void DecreaseHealth(int amount)
     {
         playerCurrentHealth -= amount;
         OnPlayerHealtChange?.Invoke();

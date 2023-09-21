@@ -7,6 +7,9 @@ public class Power : MonoBehaviour
     
     public Action OnLevelChange;
     public Action OnCharacterChange;
+
+    [SerializeField] ParticleSystem upgradeWFX;
+    [SerializeField] ParticleSystem downgradeVFX;
     
     [SerializeField] private GameObject[] players = new GameObject[4];
     private int currentLevel = 1;
@@ -40,6 +43,7 @@ public class Power : MonoBehaviour
             currentLevel++;
             players[currentLevel].gameObject.SetActive(true);
             powerLevel = willAdd;
+            upgradeWFX.Play();
             characterType = players[currentLevel].GetComponent<CharacterInfo>().CharacterType();
             OnCharacterChange?.Invoke();
         }
@@ -54,6 +58,7 @@ public class Power : MonoBehaviour
             powerLevel = willAdd;
             players[currentLevel].gameObject.SetActive(false);
             currentLevel--;
+            downgradeVFX.Play();
             players[currentLevel].gameObject.SetActive(true);
             characterType = players[currentLevel].GetComponent<CharacterInfo>().CharacterType();
             OnCharacterChange?.Invoke();

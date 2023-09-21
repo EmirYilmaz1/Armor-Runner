@@ -52,6 +52,7 @@ public class LevelHandler : MonoBehaviour
         cinemachineFightCamera.Priority = 15;
         yield return new WaitForSecondsRealtime(2f);
         canvas.SetActive(true);
+        FindObjectOfType<Boss>().canFight = true;
         fighter.enabled = true;
     }
 }
