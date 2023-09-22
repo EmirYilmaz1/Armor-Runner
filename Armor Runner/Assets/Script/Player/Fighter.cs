@@ -3,42 +3,42 @@ using UnityEngine;
 
 public class Fighter : MonoBehaviour 
 {
-    int damage;
-    Boss boss;
-    Animator animator;
+    private int damage;
+    private Boss boss;
+    private Animator animator;
+    private bool canAttack = true;
+
     private void Start() 
     {
-       damage = GetComponent<Power>().CharacterType().damage;
+        damage = GetComponent<PowerManager>().CharacterType().damage;
         boss = FindObjectOfType<Boss>();
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     private void Update() 
     {
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(0)&&canAttack)
         {
-            boss.DecreaseHealt(damage);
             StartCoroutine(attackAnimation());        
         }    
     }
 
     IEnumerator attackAnimation()
     {   
-        foreach(Transform animators in transform)
-        {
-           Animator animator= animators.GetComponent<Animator>();
-            if(animator !=null)
-            animator.SetBool("isAttacking", true);
-        }
+ 
+        animator.SetBool("isAttacking", true);
+        canAttack = false;
+        yield return new WaitForSecondsRealtime(.6f);
+        Attack();
+        yield return new WaitForSecondsRealtime(1.2f);
+        canAttack = true;
+        animator.SetBool("isAttacking", false);
         
-        yield return new WaitForSecondsRealtime(1f);
-        foreach(Transform animators in transform)
-        {
-           Animator animator= animators.GetComponent<Animator>();
-            if(animator !=null)
-            animator.SetBool("isAttacking", false);
-        }
-        
+    }
 
+    //animation
+    public void Attack()
+    {
+        boss.DecreaseHealt(damage);
     }
 }

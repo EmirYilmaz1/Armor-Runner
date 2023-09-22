@@ -9,11 +9,11 @@ public class PlayerHealth : MonoBehaviour
     public int playerMaxHealth;
     public int playerCurrentHealth;
 
-    Power power;
+    PowerManager power;
     CharacterType characterType;
     void Start()
     {
-        power = gameObject.GetComponent<Power>();
+        power = gameObject.GetComponent<PowerManager>();
         SetHealt();
         power.OnCharacterChange += SetHealt;
     }

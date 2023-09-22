@@ -6,11 +6,11 @@ using UnityEngine.UI;
 public class SlideUI : MonoBehaviour
 {
     Slider slider;
-    Power power;
+    PowerManager power;
     void Start()
     {
         slider = GetComponent<Slider>();
-       power = FindObjectOfType<Power>(); 
+       power = FindObjectOfType<PowerManager>(); 
        power.OnLevelChange += ChangeSlider;
     }
 

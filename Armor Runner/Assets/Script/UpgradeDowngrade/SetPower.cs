@@ -12,7 +12,7 @@ public abstract class SetPower : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<Power>().SetPower(ChangeAmount());
+            other.gameObject.GetComponent<PowerManager>().SetPower(ChangeAmount());
             SetFalse();
         }
     }

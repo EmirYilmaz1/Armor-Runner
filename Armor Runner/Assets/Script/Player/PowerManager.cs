@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using Unity.VisualScripting;
 
-public class Power : MonoBehaviour 
+public class PowerManager : MonoBehaviour 
 {
     
     public Action OnLevelChange;
@@ -26,8 +26,11 @@ public class Power : MonoBehaviour
         return powerLevel;
     }
 
+    private GameObject currentPlayer;
+
     private void Awake() 
     {
+        currentPlayer = Instantiate(players[currentLevel], transform);
         characterType = players[currentLevel].GetComponent<CharacterInfo>().CharacterType();    
     }
     
@@ -39,34 +42,49 @@ public class Power : MonoBehaviour
         if(level>=100)
         {
             int willAdd = level - 100;
-            players[currentLevel].gameObject.SetActive(false);
-            currentLevel++;
-            players[currentLevel].gameObject.SetActive(true);
             powerLevel = willAdd;
-            upgradeWFX.Play();
-            characterType = players[currentLevel].GetComponent<CharacterInfo>().CharacterType();
-            OnCharacterChange?.Invoke();
+
+            SetNewCharacter(true);
         }
         else if(level < 0)
         {
             if(currentLevel==0)
             {
-                 return;
+                return;
             }
 
             int willAdd = 100 + level;
             powerLevel = willAdd;
-            players[currentLevel].gameObject.SetActive(false);
-            currentLevel--;
-            downgradeVFX.Play();
-            players[currentLevel].gameObject.SetActive(true);
-            characterType = players[currentLevel].GetComponent<CharacterInfo>().CharacterType();
-            OnCharacterChange?.Invoke();
+            
+            SetNewCharacter(false);
+           
         }
         else
         {
             powerLevel = level;
+            OnLevelChange?.Invoke();
         }
+    }
+
+    private void SetNewCharacter(bool isUpgrade)
+    {
+        Destroy(currentPlayer);
+
+        if(isUpgrade)
+        {
+            currentLevel++;
+            Instantiate(upgradeWFX, transform);
+        }
+        else if(!isUpgrade)
+        {
+            currentLevel--;
+            Instantiate(downgradeVFX, transform);
+        }
+
+        currentPlayer = Instantiate(players[currentLevel], transform);
+        characterType = players[currentLevel].GetComponent<CharacterInfo>().CharacterType();
+
         OnLevelChange?.Invoke();
-    } 
+        OnCharacterChange?.Invoke();
+    }
 }

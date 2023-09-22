@@ -2,24 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class LevelHandler : MonoBehaviour
+public class CollisionHandler : MonoBehaviour
 {
     [SerializeField] CinemachineVirtualCamera cinemachineWalkCamera;
     [SerializeField] CinemachineVirtualCamera cinemachineFightCamera;
 
-    [SerializeField] GameObject canvas;
+    [SerializeField] GameObject fightCanvas;
 
-    Fighter fighter;
-    PlayerMovement playerMovement;
-    Canvas levelCanvas;
-    Animator animator;
+    private Fighter fighter;
+    private PlayerMovement playerMovement;
+    private Canvas sliderCanvas;
     private void Awake() 
     {
         fighter = GetComponent<Fighter>();
         playerMovement = GetComponent<PlayerMovement>();
-        levelCanvas = GetComponentInChildren<Canvas>();
+        sliderCanvas = GetComponentInChildren<Canvas>();
     }
     private void OnTriggerEnter(Collider other) 
     {
@@ -27,22 +25,13 @@ public class LevelHandler : MonoBehaviour
         {
           cinemachineWalkCamera.Priority = 11;
           playerMovement.SetFalse();
-          levelCanvas.enabled = false;
+          Destroy(sliderCanvas.gameObject);
         }  
 
         if(other.gameObject.CompareTag("Fight"))
         {
             playerMovement.enabled = false;
-            GetComponent<Animator>().SetBool("isIdle", true);
-
-            foreach (Transform child in transform)
-            {
-                Animator childAnimator = child.GetComponent<Animator>();
-                if (childAnimator != null)
-                {
-                    childAnimator.SetBool("isIdle", true);
-                }
-            }
+            GetComponentInChildren<Animator>().SetBool("isIdle", true);
             StartCoroutine(FightSqeunce());
         }
     }
@@ -51,8 +40,8 @@ public class LevelHandler : MonoBehaviour
     {
         cinemachineFightCamera.Priority = 15;
         yield return new WaitForSecondsRealtime(2f);
-        canvas.SetActive(true);
-        FindObjectOfType<Boss>().canFight = true;
+        fightCanvas.SetActive(true);
         fighter.enabled = true;
+        FindObjectOfType<Boss>().canFight = true;
     }
 }
