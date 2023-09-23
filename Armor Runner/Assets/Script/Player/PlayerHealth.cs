@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public Action OnPlayerHealtChange;
+    public event Action OnPlayerHealtChange;
     public int playerMaxHealth;
     public int playerCurrentHealth;
 

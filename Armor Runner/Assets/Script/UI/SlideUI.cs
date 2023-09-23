@@ -17,6 +17,6 @@ public class SlideUI : MonoBehaviour
     // Update is called once per frame
     void ChangeSlider()
     {
-        slider.value = power.PowerLevel();
+        slider.value = power.CurrentExperience();
     }
 }

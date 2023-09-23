@@ -105,6 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1229350293310605150}
   - component: {fileID: 1229350293310605149}
+  - component: {fileID: 6356158874378956872}
   m_Layer: 0
   m_Name: CM vcam2
   m_TagString: Untagged
@@ -166,6 +167,19 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 1229350293163585161}
+--- !u!114 &6356158874378956872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229350293310605148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38a24102897ba6c47b709e1cf4a9b34e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFighCamera: 0
 --- !u!1 &1229350293490556940
 GameObject:
   m_ObjectHideFlags: 0
@@ -602,8 +616,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: accee686781b91f4dbe39c288c0673bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cinemachineWalkCamera: {fileID: 1229350293310605149}
-  cinemachineFightCamera: {fileID: 0}
   fightCanvas: {fileID: 0}
 --- !u!114 &1450401022
 MonoBehaviour:

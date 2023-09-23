@@ -5,14 +5,14 @@ using Unity.VisualScripting;
 public class PowerManager : MonoBehaviour 
 {
     
-    public Action OnLevelChange;
-    public Action OnCharacterChange;
+    public event Action OnLevelChange;
+    public event Action OnCharacterChange;
 
     [SerializeField] ParticleSystem upgradeWFX;
     [SerializeField] ParticleSystem downgradeVFX;
     
     [SerializeField] private GameObject[] players = new GameObject[4];
-    private int currentLevel = 1;
+    private int currentCharacterLevel = 1;
 
     private CharacterType characterType;
     public CharacterType CharacterType()
@@ -20,48 +20,48 @@ public class PowerManager : MonoBehaviour
         return characterType;
     }
 
-    private int powerLevel = 0;
-    public int PowerLevel()
+    private int currentExperience = 0;
+    public int CurrentExperience()
     {
-        return powerLevel;
+        return currentExperience;
     }
 
     private GameObject currentPlayer;
 
     private void Awake() 
     {
-        currentPlayer = Instantiate(players[currentLevel], transform);
-        characterType = players[currentLevel].GetComponent<CharacterInfo>().CharacterType();    
+        currentPlayer = Instantiate(players[currentCharacterLevel], transform);
+        characterType = players[currentCharacterLevel].GetComponent<CharacterInfo>().CharacterType();    
     }
     
 
     public void SetPower(int amount)
     {
-        int level = powerLevel+amount;
+        int level = currentExperience+amount;
         
         if(level>=100)
         {
             int willAdd = level - 100;
-            powerLevel = willAdd;
+            currentExperience = willAdd;
 
             SetNewCharacter(true);
         }
         else if(level < 0)
         {
-            if(currentLevel==0)
+            if(currentCharacterLevel==0)
             {
                 return;
             }
 
             int willAdd = 100 + level;
-            powerLevel = willAdd;
+            currentExperience = willAdd;
             
             SetNewCharacter(false);
            
         }
         else
         {
-            powerLevel = level;
+            currentExperience = level;
             OnLevelChange?.Invoke();
         }
     }
@@ -72,17 +72,17 @@ public class PowerManager : MonoBehaviour
 
         if(isUpgrade)
         {
-            currentLevel++;
+            currentCharacterLevel++;
             Instantiate(upgradeWFX, transform);
         }
         else if(!isUpgrade)
         {
-            currentLevel--;
+            currentCharacterLevel--;
             Instantiate(downgradeVFX, transform);
         }
 
-        currentPlayer = Instantiate(players[currentLevel], transform);
-        characterType = players[currentLevel].GetComponent<CharacterInfo>().CharacterType();
+        currentPlayer = Instantiate(players[currentCharacterLevel], transform);
+        characterType = players[currentCharacterLevel].GetComponent<CharacterInfo>().CharacterType();
 
         OnLevelChange?.Invoke();
         OnCharacterChange?.Invoke();

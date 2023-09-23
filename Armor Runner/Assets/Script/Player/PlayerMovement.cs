@@ -8,29 +8,33 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float horizontalSpeed;
 
     private bool canMove = true;
-    public void SetFalse()
-    {
-        canMove = false;
-    }
-    Rigidbody rigidbody;
-    Vector3 mousePos;
+    private Rigidbody rb;
+    private Vector3 mousePos;
+    private CollisionHandler collisionHandler;
 
     // Start is called before the first frame update
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
+        collisionHandler = GetComponent<CollisionHandler>();
+        collisionHandler.OnWalkSequence += StopMoving;
+        collisionHandler.OnFightSequnce += () => {this.enabled = false;};
     }
 
     // Update is called once per frame
     void Update()
     {
         transform.Translate(Vector3.forward*Time.deltaTime*forwardSpeed);
-        if(!canMove) return;
-        if(Input.GetMouseButton(0))
+        if(Input.GetMouseButton(0)&&canMove)
         {
             mousePos = Input.mousePosition;
             float pos  = (mousePos.x-524)/524;
-            rigidbody.velocity = new Vector3 (pos*horizontalSpeed,0,0);
+            rb.velocity = new Vector3 (pos*horizontalSpeed,0,0);
         }
+    }
+
+    public void StopMoving()
+    {
+        canMove = false;
     }
 }

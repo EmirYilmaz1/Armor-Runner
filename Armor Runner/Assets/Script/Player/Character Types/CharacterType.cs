@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "new Character Type", menuName = "Character Type")]
 public class CharacterType : ScriptableObject
 {
-   public string name;
+   public string characterName;
    public int healt;
    public int damage;
 }
